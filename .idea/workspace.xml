@@ -9,23 +9,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb970ff8-871d-43d2-a026-847376efd345" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/lab.mk" beforeDir="false" afterPath="$PROJECT_DIR$/conf/lab.mk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grade-lab-syscall" beforeDir="false" afterPath="$PROJECT_DIR$/grade-lab-syscall" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/defs.h" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/defs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/kalloc.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/kalloc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/proc.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/proc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/proc.h" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/proc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/syscall.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/syscall.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/syscall.h" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/syscall.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/sysinfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sysinfo.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/sysproc.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sysproc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/sysinfotest.c" beforeDir="false" afterPath="$PROJECT_DIR$/user/sysinfotest.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/trace.c" beforeDir="false" afterPath="$PROJECT_DIR$/user/trace.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/user.h" beforeDir="false" afterPath="$PROJECT_DIR$/user/user.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/usys.pl" beforeDir="false" afterPath="$PROJECT_DIR$/user/usys.pl" afterDir="false" />
-    </list>
+    <list default="true" id="eb970ff8-871d-43d2-a026-847376efd345" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,7 +67,7 @@
       <workItem from="1706264498960" duration="91000" />
       <workItem from="1706701530546" duration="10652000" />
       <workItem from="1706869709519" duration="52000" />
-      <workItem from="1706875097203" duration="6023000" />
+      <workItem from="1706875097203" duration="6118000" />
     </task>
     <servers />
   </component>
