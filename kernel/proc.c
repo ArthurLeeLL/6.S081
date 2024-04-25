@@ -21,6 +21,8 @@ static void freeproc(struct proc *p);
 
 extern char trampoline[]; // trampoline.S
 
+extern char etext[];  // kernel.ld sets this to end of kernel code.
+
 // initialize the proc table at boot time.
 void
 procinit(void)
@@ -34,12 +36,12 @@ procinit(void)
       // Allocate a page for the process's kernel stack.
       // Map it high in memory, followed by an invalid
       // guard page.
-      char *pa = kalloc();
-      if(pa == 0)
-        panic("kalloc");
-      uint64 va = KSTACK((int) (p - proc));
-      kvmmap(va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
-      p->kstack = va;
+//      char *pa = kalloc();
+//      if(pa == 0)
+//        panic("kalloc");
+//      uint64 va = KSTACK((int) (p - proc));
+//      kvmmap(va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
+//      p->kstack = va;
   }
   kvminithart();
 }
@@ -85,6 +87,48 @@ allocpid() {
   return pid;
 }
 
+// add a mapping to the process' kernel page table.
+// does not flush TLB or enable paging.
+void
+prokvmmap(uint64 va, uint64 pa, uint64 sz, int perm, pagetable_t p_kernel_pagetable)
+{
+    mappages(p_kernel_pagetable, va, sz, pa, perm);
+}
+
+pagetable_t
+prokvminit()
+{
+    pagetable_t p_kernel_pagetable = (pagetable_t) kalloc();
+    if(p_kernel_pagetable == 0)
+        panic("kalloc");
+
+    memset(p_kernel_pagetable, 0, PGSIZE);
+
+    // uart registers
+    prokvmmap(UART0, UART0, PGSIZE, PTE_R | PTE_W, p_kernel_pagetable);
+
+    // virtio mmio disk interface
+    prokvmmap(VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W, p_kernel_pagetable);
+
+    // CLINT
+    prokvmmap(CLINT, CLINT, 0x10000, PTE_R | PTE_W, p_kernel_pagetable);
+
+    // PLIC
+    prokvmmap(PLIC, PLIC, 0x400000, PTE_R | PTE_W, p_kernel_pagetable);
+
+    // map kernel text executable and read-only.
+    prokvmmap(KERNBASE, KERNBASE, (uint64)etext-KERNBASE, PTE_R | PTE_X, p_kernel_pagetable);
+
+    // map kernel data and the physical RAM we'll make use of.
+    prokvmmap((uint64)etext, (uint64)etext, PHYSTOP-(uint64)etext, PTE_R | PTE_W, p_kernel_pagetable);
+
+    // map the trampoline for trap entry/exit to
+    // the highest virtual address in the kernel.
+    prokvmmap(TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X, p_kernel_pagetable);
+
+    return p_kernel_pagetable;
+}
+
 // Look in the process table for an UNUSED proc.
 // If found, initialize state required to run in the kernel,
 // and return with p->lock held.
@@ -105,6 +149,7 @@ allocproc(void)
   return 0;
 
 found:
+
   p->pid = allocpid();
 
   // Allocate a trapframe page.
@@ -121,6 +166,21 @@ found:
     return 0;
   }
 
+  //
+
+  // Create the process's kernel page table
+  p->p_kernel_pagetable = prokvminit();
+
+  // Allocate a page for the process's kernel stack.
+  // Map it high in memory, followed by an invalid
+  // guard page.
+  char *pa = kalloc();
+  if(pa == 0)
+      panic("kalloc");
+  uint64 va = KSTACK((int) (p - proc));
+  prokvmmap(va, (uint64)pa, PGSIZE, PTE_R | PTE_W, p->p_kernel_pagetable);
+  p->kstack = va;
+
   // Set up new context to start executing at forkret,
   // which returns to user space.
   memset(&p->context, 0, sizeof(p->context));
@@ -128,6 +188,19 @@ found:
   p->context.sp = p->kstack + PGSIZE;
 
   return p;
+}
+
+void
+proc_free_p_kernel_pagetable(struct proc *p) {
+    pro_uvmunmap(p->p_kernel_pagetable, UART0, 1, 0);
+    pro_uvmunmap(p->p_kernel_pagetable, VIRTIO0, 1, 0);
+    pro_uvmunmap(p->p_kernel_pagetable, CLINT, (0x10000)/PGSIZE, 0);
+    pro_uvmunmap(p->p_kernel_pagetable, PLIC, (0x400000)/PGSIZE, 0);
+    pro_uvmunmap(p->p_kernel_pagetable, KERNBASE, ((uint64)etext-KERNBASE)/PGSIZE, 0);
+    pro_uvmunmap(p->p_kernel_pagetable, (uint64)etext, (PHYSTOP-(uint64)etext)/PGSIZE, 0);
+    pro_uvmunmap(p->p_kernel_pagetable, TRAMPOLINE, 1, 0);
+
+    ufreewalk(p->p_kernel_pagetable);
 }
 
 // free a proc structure and the data hanging from it,
@@ -142,6 +215,12 @@ freeproc(struct proc *p)
   if(p->pagetable)
     proc_freepagetable(p->pagetable, p->sz);
   p->pagetable = 0;
+  if(p->kstack)
+      uvmunmap(p->p_kernel_pagetable, p->kstack, 1, 1);
+  p->kstack = 0;
+  if(p->p_kernel_pagetable)
+    proc_free_p_kernel_pagetable(p);
+  p->p_kernel_pagetable = 0;
   p->sz = 0;
   p->pid = 0;
   p->parent = 0;
@@ -195,6 +274,7 @@ proc_freepagetable(pagetable_t pagetable, uint64 sz)
   uvmfree(pagetable, sz);
 }
 
+
 // a user program that calls exec("/init")
 // od -t xC initcode
 uchar initcode[] = {
@@ -228,7 +308,10 @@ userinit(void)
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
 
+  uvmcopy_new(p->pagetable, p->p_kernel_pagetable, 0, p->sz);
+
   p->state = RUNNABLE;
+
 
   release(&p->lock);
 }
@@ -243,11 +326,15 @@ growproc(int n)
 
   sz = p->sz;
   if(n > 0){
-    if((sz = uvmalloc(p->pagetable, sz, sz + n)) == 0) {
+    if((sz + n >= PLIC) || (sz = uvmalloc(p->pagetable, sz, sz + n)) == 0) {
       return -1;
+    }
+    if(uvmcopy_new(p->pagetable, p->p_kernel_pagetable, p->sz, sz) < 0){
+        return -1;
     }
   } else if(n < 0){
     sz = uvmdealloc(p->pagetable, sz, sz + n);
+    uvmunmap(p->p_kernel_pagetable, PGROUNDUP(sz), (PGROUNDUP(p->sz) - PGROUNDUP(sz)) / PGSIZE, 0);
   }
   p->sz = sz;
   return 0;
@@ -273,6 +360,16 @@ fork(void)
     release(&np->lock);
     return -1;
   }
+
+//  // Copy parent process' kstack to child process' kstack
+//  memmove((char*)np->kstack, (char*)p->kstack, PGSIZE);
+
+  if(uvmcopy_new(p->pagetable, np->p_kernel_pagetable, 0, p->sz) < 0){
+      freeproc(np);
+      release(&np->lock);
+      return -1;
+  }
+
   np->sz = p->sz;
 
   np->parent = p;
@@ -473,11 +570,14 @@ scheduler(void)
         // before jumping back to us.
         p->state = RUNNING;
         c->proc = p;
+        w_satp(MAKE_SATP(p->p_kernel_pagetable));
+        sfence_vma();
         swtch(&c->context, &p->context);
 
         // Process is done running for now.
         // It should have changed its p->state before coming back.
         c->proc = 0;
+        kvminithart();
 
         found = 1;
       }
@@ -485,6 +585,7 @@ scheduler(void)
     }
 #if !defined (LAB_FS)
     if(found == 0) {
+      kvminithart();
       intr_on();
       asm volatile("wfi");
     }
