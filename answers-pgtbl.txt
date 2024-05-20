@@ -1,0 +1,1 @@
+So if the value of srcva is less than p->sz and the value of len is a very large number which makes the result of srcva+len > maximum value for uint64 in this situation for the first and the second test be false and the third one be true.
