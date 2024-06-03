@@ -484,3 +484,27 @@ sys_pipe(void)
   }
   return 0;
 }
+
+uint64
+sys_sigalarm(void)
+{
+    struct proc *p = myproc();
+    int interval;
+    uint64 callback;
+    if(argint(0, &interval)<0 || argaddr(1, &callback)<0) {
+        return -1;
+    }
+    p->pro_alarm_interval = interval;
+    p->pro_handler = callback;
+    p->pro_ticks_passed = 0;
+    return 0;
+}
+
+uint64
+sys_sigreturn(void)
+{
+    struct proc *p = myproc();
+    memmove(p->trapframe, p->pro_reserved_trapframe, PGSIZE);
+    p->pro_is_called = 0;
+    return 0;
+}

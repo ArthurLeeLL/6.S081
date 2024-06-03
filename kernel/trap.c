@@ -76,9 +76,19 @@ usertrap(void)
   if(p->killed)
     exit(-1);
 
-  // give up the CPU if this is a timer interrupt.
-  if(which_dev == 2)
-    yield();
+  if(which_dev == 2) {
+      struct proc *p = myproc();
+      if(p->pro_alarm_interval > 0) {
+          p->pro_ticks_passed++;
+          if( p->pro_ticks_passed >= p->pro_alarm_interval && p->pro_is_called == 0) {
+              memmove(p->pro_reserved_trapframe, p->trapframe, PGSIZE);
+              p->trapframe->epc = p->pro_handler;
+              p->pro_is_called = 1;
+              p->pro_ticks_passed = 0;
+          }
+      }
+      yield();
+  }
 
   usertrapret();
 }

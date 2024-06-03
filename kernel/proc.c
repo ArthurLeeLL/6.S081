@@ -85,6 +85,10 @@ allocpid() {
   return pid;
 }
 
+void
+voidFunction()
+{}
+
 // Look in the process table for an UNUSED proc.
 // If found, initialize state required to run in the kernel,
 // and return with p->lock held.
@@ -113,6 +117,11 @@ found:
     return 0;
   }
 
+  if((p->pro_reserved_trapframe = (struct trapframe *)kalloc()) == 0){
+      release(&p->lock);
+      return 0;
+  }
+
   // An empty user page table.
   p->pagetable = proc_pagetable(p);
   if(p->pagetable == 0){
@@ -120,6 +129,12 @@ found:
     release(&p->lock);
     return 0;
   }
+
+  // Set up fields for system call sigalarm and sigreturn
+  p->pro_ticks_passed = 0;
+  p->pro_alarm_interval = 0;
+  p->pro_handler = 0;
+  p->pro_is_called = 0;
 
   // Set up new context to start executing at forkret,
   // which returns to user space.
@@ -139,6 +154,9 @@ freeproc(struct proc *p)
   if(p->trapframe)
     kfree((void*)p->trapframe);
   p->trapframe = 0;
+  if(p->trapframe)
+      kfree((void*)p->pro_reserved_trapframe);
+  p->pro_reserved_trapframe = 0;
   if(p->pagetable)
     proc_freepagetable(p->pagetable, p->sz);
   p->pagetable = 0;
@@ -150,6 +168,10 @@ freeproc(struct proc *p)
   p->killed = 0;
   p->xstate = 0;
   p->state = UNUSED;
+  p->pro_ticks_passed = 0;
+  p->pro_alarm_interval = 0;
+  p->pro_handler = 0;
+  p->pro_is_called = 0;
 }
 
 // Create a user page table for a given process,
