@@ -67,7 +67,12 @@ usertrap(void)
     syscall();
   } else if((which_dev = devintr()) != 0){
     // ok
-  } else {
+  } else if(r_scause() == 15 && uncopied_cow(p->pagetable, r_stval())){
+      if(cowalloc(p->pagetable, r_stval()) < 0){
+          p->killed = 1;
+      }
+  }
+  else {
     printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
     printf("            sepc=%p stval=%p\n", r_sepc(), r_stval());
     p->killed = 1;
@@ -81,6 +86,33 @@ usertrap(void)
     yield();
 
   usertrapret();
+}
+
+int cowalloc(pagetable_t pgtbl, uint64 va){
+    pte_t* pte = walk(pgtbl, va, 0);
+    uint64 perm = PTE_FLAGS(*pte);
+
+    if(pte == 0) return -1;
+    uint64 prev_sta = PTE2PA(*pte); // 这里的 prev_sta 就是这个页帧原来使用的父进程的页表
+    // 这里写 sta 是因为这个地址是和页帧对齐的（page-aligned）
+    // 所以写个 sta 表示一个页帧的开始
+    uint64 newpage = (uint64)kalloc();
+    if(!newpage){
+        return -1;
+    }
+    uint64 va_sta = PGROUNDDOWN(va); // 当前页帧
+
+    perm &= (~PTE_C); // 复制之后就不是合法的 COW 页了
+    perm |= PTE_W;    // 复制之后就可以写了
+
+    memmove((void*)newpage, (void*)prev_sta, PGSIZE); // 把父进程页帧的数据复制一遍
+    uvmunmap(pgtbl, va_sta, 1, 1);      // 然后取消对父进程页帧的映射
+
+    if(mappages(pgtbl, va_sta, PGSIZE, (uint64)newpage, perm) < 0){
+        kfree((void*)newpage);
+        return -1;
+    }
+    return 0;
 }
 
 //

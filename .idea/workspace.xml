@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="eb970ff8-871d-43d2-a026-847376efd345" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/kernel/dbg_macros.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/time.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grade-lab-cow" beforeDir="false" afterPath="$PROJECT_DIR$/grade-lab-cow" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/defs.h" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/defs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/kalloc.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/kalloc.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/riscv.h" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/riscv.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/trap.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/trap.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/vm.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/vm.c" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MakefileLocalSettings">
+    <option name="availableProjects">
+      <map>
+        <entry>
+          <key>
+            <ExternalProjectPojo>
+              <option name="name" value="xv6-labs-2020" />
+              <option name="path" value="$PROJECT_DIR$" />
+            </ExternalProjectPojo>
+          </key>
+          <value>
+            <list>
+              <ExternalProjectPojo>
+                <option name="name" value="xv6-labs-2020" />
+                <option name="path" value="$PROJECT_DIR$" />
+              </ExternalProjectPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2023" />
+    <option name="minorVersion" value="2.2" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2afX8HzmJxFzsoJnN0GapdI3k2L" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;cow&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/Computer Science and Engineering/Computer Science and Engineering/MIT6.S081 - Introduction to Operating Systems/xv6-labs-2020/kernel&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\Computer Science and Engineering\Computer Science and Engineering\MIT6.S081 - Introduction to Operating Systems\xv6-labs-2020\kernel" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\MyCode\courses\6.S081\xv6-labs-2020\kernel" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="eb970ff8-871d-43d2-a026-847376efd345" name="Changes" comment="" />
+      <created>1704710445694</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1704710445694</updated>
+      <workItem from="1704710446722" duration="322000" />
+      <workItem from="1704710847049" duration="53000" />
+      <workItem from="1704710909993" duration="37000" />
+      <workItem from="1704710955418" duration="5807000" />
+      <workItem from="1704796788398" duration="4609000" />
+      <workItem from="1704979016572" duration="564000" />
+      <workItem from="1705320036508" duration="4795000" />
+      <workItem from="1706092521367" duration="1254000" />
+      <workItem from="1706183659937" duration="4954000" />
+      <workItem from="1706264498960" duration="91000" />
+      <workItem from="1706701530546" duration="10652000" />
+      <workItem from="1706869709519" duration="52000" />
+      <workItem from="1706875097203" duration="6118000" />
+      <workItem from="1710241201423" duration="92000" />
+      <workItem from="1710241392558" duration="344000" />
+      <workItem from="1710241777767" duration="1308000" />
+      <workItem from="1710243513254" duration="6762000" />
+      <workItem from="1710414772585" duration="5606000" />
+      <workItem from="1710846926957" duration="6620000" />
+      <workItem from="1711541387473" duration="5484000" />
+      <workItem from="1712054684266" duration="7842000" />
+      <workItem from="1712485892251" duration="8929000" />
+      <workItem from="1712659140154" duration="9445000" />
+      <workItem from="1712833604290" duration="8533000" />
+      <workItem from="1713351832286" duration="8077000" />
+      <workItem from="1713437430717" duration="4861000" />
+      <workItem from="1713870725195" duration="6095000" />
+      <workItem from="1714042641888" duration="8281000" />
+      <workItem from="1714051367796" duration="1205000" />
+      <workItem from="1714302024644" duration="2139000" />
+      <workItem from="1714387932794" duration="3177000" />
+      <workItem from="1714475702329" duration="1792000" />
+      <workItem from="1714995912883" duration="5624000" />
+      <workItem from="1715171875594" duration="1352000" />
+      <workItem from="1715596377149" duration="9485000" />
+      <workItem from="1715686751544" duration="3708000" />
+      <workItem from="1716200764949" duration="6080000" />
+      <workItem from="1716809082580" duration="3512000" />
+      <workItem from="1716892935807" duration="8402000" />
+      <workItem from="1717410723324" duration="9514000" />
+      <workItem from="1720522150145" duration="11856000" />
+      <workItem from="1720616218381" duration="6661000" />
+      <workItem from="1720694181447" duration="6014000" />
+      <workItem from="1721653495005" duration="3261000" />
+      <workItem from="1725445463458" duration="9147000" />
+      <workItem from="1725884885354" duration="4319000" />
+      <workItem from="1725967719092" duration="15315000" />
+      <workItem from="1726657988036" duration="15191000" />
+      <workItem from="1728392606678" duration="3755000" />
+      <workItem from="1728560720469" duration="742000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
