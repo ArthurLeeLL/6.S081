@@ -1,0 +1,20 @@
+In the ph.c file, the function insert can actually cause a key missing.
+For example, if both of the threads enter that function, and they want to insert their own keys, and the sequence of the code is like this:
+
+t1: struct entry *e = malloc(sizeof(struct entry));
+      e->key = key;
+      e->value = value;
+
+t2: struct entry *e = malloc(sizeof(struct entry));
+      e->key = key;
+      e->value = value;
+
+t1: e->next = n;
+
+t2: e->next = n;
+
+t1: *p = e;
+
+t2: *p = e;
+
+Boom, a new key/value pair lost.
